@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require "hexj"
+include Hexj
+require "optparse"
+
+opts=ARGV.getopts("c:w:", "encoding:", "width:")
+$encoding=opts["c"]||opts["encoding"]||Encoding::UTF_8
+$width=(opts["w"]||opts["width"]||16).to_i
+
+address=0
+while 1
+  input=ARGF.read($width)
+  exit if input.nil?
+  printf "%08X: %s | %s |\n", address, hexdump(input), stringdump(input)
+  address+=$width
+end
