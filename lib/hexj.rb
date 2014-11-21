@@ -8,7 +8,9 @@ end
 
 module Hexj
   def hexdump input
-  input.codepoints.map{|x| "%02X" % x}.join(" ").ljust($width*3, " ")
+    result=Array.new
+    input.codepoints.each_slice(4){|y| result << y.map{|x| "%02x" % x}.join(" ")}
+    result.join("  ").ljust($width*3+($width-1)/4, " ")
   end
 
   def stringdump input
@@ -23,12 +25,14 @@ module Hexj
       result=encoder.primitive_convert(input, destination)
       case result
       when :invalid_byte_sequence
+        encoder.insert_output(".")
         encoder.insert_output(encoder.primitive_errinfo[3].dump[1..-2])
         redo
       when :defefined_conversion
         encoder.insert_output("."*encoder.primitive_errinfo[3].size)
         redo
       when :incomplete_input
+        encoder.insert_output(".")
         encoder.insert_output(encoder.primitive_errinfo[3].dump[1..-2])
       when :finished
       end

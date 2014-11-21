@@ -12,6 +12,6 @@ address=0
 while 1
   input=ARGF.read($width)
   exit if input.nil?
-  printf "%08X: %s | %s |\n", address, hexdump(input), stringdump(input)
+  printf "%08x: %s | %s |\n", address, hexdump(input), stringdump(input)
   address+=$width
 end
