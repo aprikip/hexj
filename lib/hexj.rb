@@ -35,6 +35,9 @@ module Hexj
         encoder.insert_output(".")
         encoder.insert_output(encoder.primitive_errinfo[3].dump[1..-2])
       when :finished
+      else
+        encoder.insert_output("."*encoder.primitive_errinfo[3].size)
+        redo
       end
       break
     end while nil
